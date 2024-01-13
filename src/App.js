@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+// Import everything needed to use the `useQuery` hook
+import { useQuery, gql } from '@apollo/client';
+import "./App.css"
+const GET_LOCATIONS = gql`
+  query Records {
+    queryRecord {
+      id
+      date
+      symptom
+    }
+  }
+`;
+function DisplayRecords() {
+  const { loading, error, data } = useQuery(GET_LOCATIONS);
 
-function App() {
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <table id='records'>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Symptoms</th>
+        </tr>
+        {data.queryRecord.map((data) => (
+          <tr>
+            <td>{data.id}</td>
+            <td>{data.date}</td>
+            <td><ul>{
+              data.symptom.map(s => (
+                <li>
+                  {s}
+                </li>
+              ))}</ul></td>
+          </tr>
+        ))}
+      </table>
+
     </div>
   );
 }
-
-export default App;
+export default function App() {
+  return (
+    <div>
+      <h1>TrackMyMeds</h1>
+      <br />
+      <DisplayRecords />
+    </div>
+  );
+}
