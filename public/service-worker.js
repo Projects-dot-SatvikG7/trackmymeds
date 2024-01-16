@@ -9,9 +9,7 @@ const CACHE_THIS = [
   "/",
   "/index.html",
   "/manifest.json",
-  "/static/styles/style.css",
-  "/static/js/main.js",
-  "static/assets/icons/icon-192x192.png",
+  "/logo192.png",
 ];
 
 // *** This event is fired when a new Service worker is installed ***
