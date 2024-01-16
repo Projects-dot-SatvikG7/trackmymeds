@@ -53,7 +53,8 @@ function AddData({ data, setData }) {
       let newData = [...data, mutatedData.addRecord.record[0]];
       setData(newData);
     }
-  }, [data, setData, mutatedData]);
+    // eslint-disable-next-line
+  }, [mutatedData]);
   const toggle = (idx) => {
     let temp = [...props];
     temp[idx][1] = 1 - temp[idx][1];
