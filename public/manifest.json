@@ -5,7 +5,7 @@
   "theme_color": "#04aa6d",
   "background_color": "#faebd7",
   "display": "standalone",
-  "scope": "https://curly-yodel-p5jqwq4vrg4frwxg-3000.app.github.dev/",
+  "scope": "https://trackmymeds.deno.dev/",
   "start_url": ".",
   "icons": [
     {
