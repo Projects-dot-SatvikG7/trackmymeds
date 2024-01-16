@@ -67,11 +67,9 @@ function AddData({ data, setData }) {
 
       const differenceInMilliseconds = date2.getTime() - date1.getTime();
       const differenceInHours = differenceInMilliseconds / 3600000;
-
       return differenceInHours;
     }
-
-    let date = new Date().toLocaleString();
+    let date = new Date();
     if (
       data.length &&
       getDifferenceInHours(data[data.length - 1].date, date) < 6
@@ -82,7 +80,6 @@ function AddData({ data, setData }) {
       return;
     }
     let symptoms = props.filter((prop) => prop[1]).map((prop) => prop[0]);
-    console.log(date, symptoms);
     addDataFunction({ variables: { date, symptoms } });
   };
   return (

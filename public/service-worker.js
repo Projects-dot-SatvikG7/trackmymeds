@@ -1,8 +1,8 @@
 // *** This is cache name, change this whenever you make changes to the app ***
-const CACHE_NAME = "cache-v0";
+const CACHE_NAME = "cache-v2";
 
 // *** This is cache name, change this whenever you make changes to the app ***
-const DYNAMIC_CACHE_NAME = "dynamic-cache-v0";
+const DYNAMIC_CACHE_NAME = "dynamic-cache-v2";
 
 // *** Array of files that you want browser to cache (Mostly static assets) and think then as fetch requested ***
 const CACHE_THIS = [
