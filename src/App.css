@@ -1,105 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "montserrat";
-    user-select: none;
-    background-color: azure;
-  }
-  
-  h1 {
-    text-align: center;
-    color: #4caf50;
-  }
-  
-  .error {
-    color: red;
-    font-size: 12px;
-    text-align: center;
-  }
-  
-  .form-flex {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    gap: 8px;
-    background-color: antiquewhite;
-    padding: 20px;
-  }
-  
-  .form-flex h2 {
-    background-color: antiquewhite;
-  }
-  
-  .btn-flex {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: 4px;
-    background-color: antiquewhite;
-    flex-wrap: wrap;
-  }
-  
-  .btn {
-    text-transform: capitalize;
-    border-radius: 12px;
-    border: none;
-    color: black;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    background-color: #fff;
-    cursor: pointer;
-  }
-  
-  .btn-process {
-    color: #fff;
-    background-color: #008CBA;
-  }
-  
-  .selected {
-    background-color: #f44336;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-  }
-  
-  li {
-    list-style: none;
-    text-transform: capitalize;
-  }
-  
-  #records {
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  #records td,
-  #records th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  #records tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  #records tr:hover {
-    background-color: #ddd;
-  }
-  
-  #records th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #04AA6D;
-    color: white;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "montserrat";
+  user-select: none;
+  background-color: azure;
+}
+
+h1 {
+  text-align: center;
+  color: #4caf50;
+}
+
+p {
+  text-align: center;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  text-align: center;
+}
+
+.form-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 8px;
+  background-color: antiquewhite;
+  padding: 20px;
+}
+
+.form-flex h2 {
+  background-color: #faebd7;
+}
+
+.btn-flex {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 4px;
+  background-color: #faebd7;
+  flex-wrap: wrap;
+}
+
+.btn {
+  text-transform: capitalize;
+  border-radius: 12px;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.btn-process {
+  color: #fff;
+  background-color: #008cba;
+}
+
+.btn-delete {
+  color: #fff;
+  background-color: red;
+  padding: 4px 8px;
+}
+
+.selected {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+li {
+  list-style: none;
+  text-transform: capitalize;
+}
+#table-wrapper {
+  width: 100%;
+  overflow: scroll;
+}
+#records {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#records td,
+#records th {
+  border: 1px solid #ddd;
+}
+
+#records th {
+  text-align: left;
+  background-color: #04aa6d;
+  padding: 4px 8px;
+  color: white;
+}

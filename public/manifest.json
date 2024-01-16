@@ -1,6 +1,12 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "name": "TrackMyMeds",
+  "short_name": "TrackMyMeds",
+  "description": "Track My Medicine is an PWA build to keep track of medicine doses",
+  "theme_color": "#04aa6d",
+  "background_color": "#faebd7",
+  "display": "standalone",
+  "scope": "https://curly-yodel-p5jqwq4vrg4frwxg-3000.app.github.dev/",
+  "start_url": ".",
   "icons": [
     {
       "src": "favicon.ico",
@@ -17,9 +23,5 @@
       "type": "image/png",
       "sizes": "512x512"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  ]
 }
