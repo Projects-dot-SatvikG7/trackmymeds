@@ -89,7 +89,7 @@ li {
 }
 #table-wrapper {
   width: 100%;
-  overflow: scroll;
+  overflow: auto;
 }
 #records {
   font-family: Arial, Helvetica, sans-serif;

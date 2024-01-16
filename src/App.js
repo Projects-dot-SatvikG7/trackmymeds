@@ -53,7 +53,7 @@ function AddData({ data, setData }) {
       let newData = [...data, mutatedData.addRecord.record[0]];
       setData(newData);
     }
-  }, [mutatedData]);
+  }, [data, setData, mutatedData]);
   const toggle = (idx) => {
     let temp = [...props];
     temp[idx][1] = 1 - temp[idx][1];
@@ -117,6 +117,7 @@ function DeleteSelected({ record, setRecord, selectedRecord, setSelected }) {
           if (y.id === r) {
             bool = false;
           }
+          return true;
         });
         return bool;
       });
@@ -134,10 +135,14 @@ function DeleteSelected({ record, setRecord, selectedRecord, setSelected }) {
       });
       setRecord(newArr);
     }
-  }, [deletedRecord]);
+  }, [setRecord, record, setSelected, selectedRecord, deletedRecord]);
   const deleteRecord = () => {
     deleteRecordFunction({ variables: { id: selectedRecord } });
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+
   return (
     <button onClick={() => deleteRecord()} className="btn btn-delete">
       Delete Records
