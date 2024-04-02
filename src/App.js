@@ -1,6 +1,8 @@
 import { useQuery, gql, useMutation } from "@apollo/client";
 import "./App.css";
 import { useEffect, useState } from "react";
+import moment from "moment";
+
 const GET_RECORDS = gql`
   query Records {
     queryRecord {
@@ -61,18 +63,24 @@ function AddData({ data, setData }) {
     setProps(temp);
   };
   const addRecord = () => {
-    function getDifferenceInHours(dateString1, dateString2) {
-      const date1 = new Date(dateString1);
-      const date2 = new Date(dateString2);
+    function isMoreThanSixHoursDifference(date1, date2) {
+      const moment1 = moment(date1);
+      const moment2 = moment(date2);
 
-      const differenceInMilliseconds = date2.getTime() - date1.getTime();
-      const differenceInHours = differenceInMilliseconds / 3600000;
-      return differenceInHours;
+      const difference = moment2.diff(moment1);
+
+      const hoursDifference = Math.abs(moment.duration(difference).asHours());
+
+      return hoursDifference > 6;
     }
-    let date = new Date();
+
+    let date = moment().format("Do MMMM YYYY, h:mm:ss a");
+    console.log(date);
+    console.log(date);
+    console.log(date);
     if (
       data.length &&
-      getDifferenceInHours(data[data.length - 1].date, date) < 6
+      !isMoreThanSixHoursDifference(data[data.length - 1].date, date)
     ) {
       alert(
         "You cannot take medicine in less than 6 hours of your previous dose."
@@ -134,11 +142,12 @@ function DeleteSelected({ record, setRecord, selectedRecord, setSelected }) {
       setRecord(newArr);
     }
   }, [setRecord, record, setSelected, selectedRecord, deletedRecord]);
+
   const deleteRecord = () => {
     deleteRecordFunction({ variables: { id: selectedRecord } });
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p className="text-yellow">Deleting...</p>;
   if (error) return <p>Error : {error.message}</p>;
 
   return (
@@ -147,6 +156,7 @@ function DeleteSelected({ record, setRecord, selectedRecord, setSelected }) {
     </button>
   );
 }
+
 function DisplayRecords({
   loading,
   error,
