@@ -32,7 +32,6 @@ const DELETE_RECORD = gql`
         id
         date
         symptom
-        __typename
       }
     }
   }
@@ -42,42 +41,39 @@ function AddData({ data, setData }) {
   const [addDataFunction, { data: mutatedData, loading, error }] =
     useMutation(ADD_RECORD);
   const [props, setProps] = useState([
-    ["itching", 0],
-    ["watery_eyes", 0],
-    ["runny_nose", 0],
-    ["sneezing", 0],
-    ["nasal_inflammation", 0],
-    ["swollen_throat", 0],
+    { symptom: "itching", isSelected: false },
+    { symptom: "watery_eyes", isSelected: false },
+    { symptom: "runny_nose", isSelected: false },
+    { symptom: "sneezing", isSelected: false },
+    { symptom: "nasal_inflammation", isSelected: false },
+    { symptom: "swollen_throat", isSelected: false },
+    { symptom: "rash", isSelected: false },
   ]);
+
   useEffect(() => {
     if (mutatedData?.addRecord?.record.length) {
-      console.log(data);
       let newData = [...data, mutatedData.addRecord.record[0]];
       setData(newData);
     }
-    // eslint-disable-next-line
-  }, [mutatedData]);
+  }, [mutatedData, data, setData]);
+
   const toggle = (idx) => {
-    let temp = [...props];
-    temp[idx][1] = 1 - temp[idx][1];
-    setProps(temp);
+    const updatedProps = props.map((prop, i) =>
+      i === idx ? { ...prop, isSelected: !prop.isSelected } : prop
+    );
+    setProps(updatedProps);
   };
+
   const addRecord = () => {
     function isMoreThanSixHoursDifference(date1, date2) {
       const moment1 = moment(date1);
       const moment2 = moment(date2);
 
-      const difference = moment2.diff(moment1);
-
-      const hoursDifference = Math.abs(moment.duration(difference).asHours());
-
+      const hoursDifference = Math.abs(moment.duration(moment2.diff(moment1)).asHours());
       return hoursDifference > 6;
     }
 
     let date = moment().format("Do MMMM YYYY, h:mm:ss a");
-    console.log(date);
-    console.log(date);
-    console.log(date);
     if (
       data.length &&
       !isMoreThanSixHoursDifference(data[data.length - 1].date, date)
@@ -87,9 +83,13 @@ function AddData({ data, setData }) {
       );
       return;
     }
-    let symptoms = props.filter((prop) => prop[1]).map((prop) => prop[0]);
+
+    const symptoms = props
+      .filter((prop) => prop.isSelected)
+      .map((prop) => prop.symptom);
     addDataFunction({ variables: { date, symptoms } });
   };
+
   return (
     <div className="form-flex">
       <h2>Select Symptoms</h2>
@@ -97,14 +97,14 @@ function AddData({ data, setData }) {
         {props.map((prop, idx) => (
           <button
             key={idx}
-            className={"btn" + (prop[1] ? " selected" : "")}
+            className={"btn" + (prop.isSelected ? " selected" : "")}
             onClick={() => toggle(idx)}
           >
-            {prop[0].replaceAll("_", " ")}
+            {prop.symptom.replaceAll("_", " ")}
           </button>
         ))}
       </div>
-      <button onClick={() => addRecord()} className="btn btn-process">
+      <button onClick={addRecord} className="btn btn-process">
         {loading ? "Recording..." : "Record Dose"}
       </button>
       {error && <p className="error">{error.message}</p>}
@@ -115,33 +115,20 @@ function AddData({ data, setData }) {
 function DeleteSelected({ record, setRecord, selectedRecord, setSelected }) {
   const [deleteRecordFunction, { data: deletedRecord, loading, error }] =
     useMutation(DELETE_RECORD);
+
   useEffect(() => {
     if (deletedRecord?.deleteRecord?.record.length) {
-      let newArr = selectedRecord.filter((r) => {
-        let bool = true;
-        deletedRecord.deleteRecord.record.map((y) => {
-          if (y.id === r) {
-            bool = false;
-          }
-          return true;
-        });
-        return bool;
-      });
+      const newArr = selectedRecord.filter(
+        (r) => !deletedRecord.deleteRecord.record.some((y) => y.id === r)
+      );
       setSelected(newArr);
 
-      newArr = record.filter((x) => {
-        let bool = true;
-        deletedRecord.deleteRecord.record.map((y) => {
-          if (y.id === x.id) {
-            bool = false;
-          }
-          return true;
-        });
-        return bool;
-      });
-      setRecord(newArr);
+      const updatedRecords = record.filter(
+        (x) => !deletedRecord.deleteRecord.record.some((y) => y.id === x.id)
+      );
+      setRecord(updatedRecords);
     }
-  }, [setRecord, record, setSelected, selectedRecord, deletedRecord]);
+  }, [deletedRecord, record, setRecord, selectedRecord, setSelected]);
 
   const deleteRecord = () => {
     deleteRecordFunction({ variables: { id: selectedRecord } });
@@ -151,7 +138,7 @@ function DeleteSelected({ record, setRecord, selectedRecord, setSelected }) {
   if (error) return <p>Error : {error.message}</p>;
 
   return (
-    <button onClick={() => deleteRecord()} className="btn btn-delete">
+    <button onClick={deleteRecord} className="btn btn-delete">
       Delete Records
     </button>
   );
@@ -165,12 +152,12 @@ function DisplayRecords({
   select,
   setSelected,
 }) {
-  const toggleRecord = (e, id) => {
-    if (e.target.checked) {
-      setSelected([...select, id]);
-    } else {
-      setSelected(select.filter((x) => x !== id));
-    }
+  const toggleRecord = (id) => {
+    setSelected((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((x) => x !== id)
+        : [...prevSelected, id]
+    );
   };
 
   if (loading) return <p>Loading...</p>;
@@ -194,7 +181,6 @@ function DisplayRecords({
                 )}
               </th>
               <th>Sr. No.</th>
-              {/* <th>ID</th> */}
               <th>Date</th>
               <th>Symptoms</th>
             </tr>
@@ -204,12 +190,12 @@ function DisplayRecords({
               <tr key={record.id}>
                 <td>
                   <input
-                    onChange={(e) => toggleRecord(e, record.id)}
+                    onChange={() => toggleRecord(record.id)}
                     type="checkbox"
-                  ></input>
+                    checked={select.includes(record.id)}
+                  />
                 </td>
                 <td>{idx + 1}</td>
-                {/* <td>{record.id}</td> */}
                 <td>{record.date}</td>
                 <td>
                   <ul>
@@ -230,12 +216,13 @@ function DisplayRecords({
 
 export default function App() {
   const { loading, error, data } = useQuery(GET_RECORDS);
-  const [dataRecord, setData] = useState(data);
+  const [dataRecord, setData] = useState([]);
   const [selectedRecord, setSelected] = useState([]);
 
   useEffect(() => {
-    setData(data?.queryRecord);
+    setData(data?.queryRecord || []);
   }, [data]);
+
   return (
     <div>
       <h1>TrackMyMeds</h1>
