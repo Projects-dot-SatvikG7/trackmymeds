@@ -52,10 +52,10 @@ function AddData({ data, setData }) {
 
   useEffect(() => {
     if (mutatedData?.addRecord?.record.length) {
-      let newData = [...data, mutatedData.addRecord.record[0]];
-      setData(newData);
+      setData((prevData) => [...prevData, mutatedData.addRecord.record[0]]);
     }
   }, [mutatedData]);
+
 
   const toggle = (idx) => {
     const updatedProps = props.map((prop, i) =>
