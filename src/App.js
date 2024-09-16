@@ -55,7 +55,7 @@ function AddData({ data, setData }) {
       let newData = [...data, mutatedData.addRecord.record[0]];
       setData(newData);
     }
-  }, [mutatedData, data, setData]);
+  }, [mutatedData]);
 
   const toggle = (idx) => {
     const updatedProps = props.map((prop, i) =>
