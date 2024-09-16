@@ -68,26 +68,27 @@ function AddData({ data, setData }) {
     function isMoreThanSixHoursDifference(date1, date2) {
       const moment1 = moment(date1);
       const moment2 = moment(date2);
-
+  
       const hoursDifference = Math.abs(moment.duration(moment2.diff(moment1)).asHours());
       return hoursDifference > 6;
     }
-
-    let date = moment().format("Do MMMM YYYY, h:mm:ss a");
+  
+    let currentMoment = moment();
+    let formattedDate = currentMoment.format("Do MMMM YYYY, h:mm:ss a");
+  
     if (
       data.length &&
-      !isMoreThanSixHoursDifference(data[data.length - 1].date, date)
+      !isMoreThanSixHoursDifference(data[data.length - 1].date, currentMoment)
     ) {
-      alert(
-        "You cannot take medicine in less than 6 hours of your previous dose."
-      );
+      alert("You cannot take medicine in less than 6 hours of your previous dose.");
       return;
     }
-
+  
     const symptoms = props
       .filter((prop) => prop.isSelected)
       .map((prop) => prop.symptom);
-    addDataFunction({ variables: { date, symptoms } });
+  
+    addDataFunction({ variables: { date: formattedDate, symptoms } });
   };
 
   return (
