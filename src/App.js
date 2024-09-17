@@ -54,7 +54,7 @@ function AddData({ data, setData }) {
     if (mutatedData?.addRecord?.record.length) {
       setData((prevData) => [...prevData, mutatedData.addRecord.record[0]]);
     }
-  }, [mutatedData]);
+  }, [mutatedData, setData]);
 
 
   const toggle = (idx) => {
