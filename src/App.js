@@ -65,29 +65,11 @@ function AddData({ data, setData }) {
   };
 
   const addRecord = () => {
-    function isMoreThanSixHoursDifference(date1, date2) {
-      const moment1 = moment(date1);
-      const moment2 = moment(date2);
-  
-      const hoursDifference = Math.abs(moment.duration(moment2.diff(moment1)).asHours());
-      return hoursDifference > 6;
-    }
-  
     let currentMoment = moment();
     let formattedDate = currentMoment.format("Do MMMM YYYY, h:mm:ss a");
-  
-    if (
-      data.length &&
-      !isMoreThanSixHoursDifference(data[data.length - 1].date, currentMoment)
-    ) {
-      alert("You cannot take medicine in less than 6 hours of your previous dose.");
-      return;
-    }
-  
     const symptoms = props
       .filter((prop) => prop.isSelected)
       .map((prop) => prop.symptom);
-  
     addDataFunction({ variables: { date: formattedDate, symptoms } });
   };
 
