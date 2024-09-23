@@ -1,8 +1,8 @@
 // *** This is cache name, change this whenever you make changes to the app ***
-const CACHE_NAME = "cache-v6";
+const CACHE_NAME = "cache-v7";
 
 // *** This is cache name, change this whenever you make changes to the app ***
-const DYNAMIC_CACHE_NAME = "dynamic-cache-v6";
+const DYNAMIC_CACHE_NAME = "dynamic-cache-v7";
 
 // *** Array of files that you want browser to cache (Mostly static assets) and think then as fetch requested ***
 const CACHE_THIS = [
@@ -50,16 +50,21 @@ self.addEventListener("activate", (event) => {
 --else if internet connection is unavailable then a fallback page (Offline.html) is shown to the user only if the requested page is of *.html format
 */
 self.addEventListener("fetch", (event) => {
-  // console.log("Service worker if fetching", event);
-  event.respondWith(
-    caches
-      .match(event.request)
-      .then((cacheResponse) => {
+  const graphqlUrl = "https://green-feather-41331517.ap-south-1.aws.cloud.dgraph.io/graphql";
+  const serviceWorkerUrl = `${self.location.origin}/service-worker.js`;
+
+  if (event.request.url === graphqlUrl || event.request.url === serviceWorkerUrl) {
+    // If the request is for the GraphQL endpoint or the service worker script, always fetch from network
+    event.respondWith(fetch(event.request));
+  } else {
+    // Handle caching for other requests
+    event.respondWith(
+      caches.match(event.request).then((cacheResponse) => {
         return (
           cacheResponse ||
           fetch(event.request).then((fetchResponse) => {
             return caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
-              cache.put(event.request.url, fetchResponse.clone());
+              cache.put(event.request, fetchResponse.clone());
               return fetchResponse;
             });
           })
@@ -70,5 +75,6 @@ self.addEventListener("fetch", (event) => {
           return caches.match("/offline.html");
         }
       })
-  );
+    );
+  }
 });
